@@ -1,3 +1,6 @@
+#ifndef AUX_H
+#define AUX_H
+
 #include <cmath>
 #include <iostream>
 
@@ -50,3 +53,5 @@ double eval_derivada_funcion(int index, double x)
             return -1;
     }
 }
+
+#endif /* AUX_H */

@@ -1,4 +1,5 @@
 #include "falsaPos.h"
+#include "newton.h"
 #include <iostream>
 
 using namespace std;
@@ -19,6 +20,8 @@ int main (int argc, char *argv[])
     switch (option) {
         case 0:
             falsa_posicion();
+        case 1:
+            newton();
     }
     return 0;
 }
