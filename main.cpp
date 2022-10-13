@@ -14,19 +14,20 @@ void print_metodos(){
 
 int main (int argc, char *argv[])
 {
-    int size = 2;
-    double m[2][10] = {
-        {3, 3},
-        {6, 3},
+    int size = 3;
+    vector<vector<double>> m = {
+        {2, -1, 1},
+        {3, 1, -2},
+        {-1, 2, 5}
     };
-    double bm[2] = {4, 5};
+    vector<double> bm = {2, 9, -5};
 
     Matrix x(size, m, bm);
     x.print_matrix();
-    double d = x.det();
-    cout << "Determinante: " << d << endl;
-    Matrix sx = x.smaller_copy(-1, -1);
-    sx.print_matrix();
+    cout << "Guass-Jordan" << endl;
+    x.gauss_jordan();
+
+    cout << "Determinante: " << x.det() << endl;
 
     return 0;
 }
