@@ -1,8 +1,10 @@
-#include "falsaPos.h"
-#include "newton.h"
 #include <iostream>
 
 using namespace std;
+
+#include "falsaPos.h"
+#include "newton.h"
+#include "matrix.h"
 
 void print_metodos(){
     cout << "1- Falsa Posicion" << endl;
@@ -12,18 +14,19 @@ void print_metodos(){
 
 int main (int argc, char *argv[])
 {
-    int option = 0;
+    int size = 2;
+    double m[2][10] = {
+        {3, 3},
+        {6, 3},
+    };
+    double bm[2] = {4, 5};
 
-    print_metodos();
-    cout << "[!] Ingresa el metodo que quieres usar" << endl;
-    cin >> option;
+    Matrix x(size, m, bm);
+    x.print_matrix();
+    double d = x.det();
+    cout << "Determinante: " << d << endl;
+    Matrix sx = x.smaller_copy(-1, -1);
+    sx.print_matrix();
 
-    option -= 1;
-    switch (option) {
-        case 0:
-            falsa_posicion();
-        case 1:
-            newton();
-    }
     return 0;
 }
