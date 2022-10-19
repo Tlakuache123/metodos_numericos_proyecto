@@ -2,57 +2,41 @@
 #define MATRIX_H
 
 #include <iostream>
+#include <ostream>
 #include <vector>
 #include <cmath>
 
 using namespace std;
 
-const int MATRIX_SIZE = 10;
-
-
 class Matrix {
     public:
         int rows;
         int cols;
-        int del_row = -1;
-        int del_col = -1;
-        int rect_size = 0;
-        bool b_flag = true;
         vector<vector <double>> matrix;
-        vector<double> b_matrix;
 
-
-        void print_matrix();
-        void print_matrix(vector<vector<double>> m);
-        void clean();
     // Basic Operations
-        void sum(int row_to_sum, int row);
-        void sum(int row_to_sum, int row, double escalar);
-        void product(int row_to_prd, double num);
+        void set_row(int row_index, vector<double> new_row);
+
+        vector<double> sum_row(int row_to_sum, int row);
+        vector<double> sum_row(int row_to_sum, int row, double escalar);
+        vector<double> product_row(int row_to_prd, double num);
+
+        friend ostream& operator<<(ostream &out, const Matrix& mt);
+        Matrix operator+(Matrix const &mt2);
+        Matrix operator*(Matrix const &mt2);
 
     // Advance Operations
-        vector<vector<double>> transp();
-        Matrix copy();
+        Matrix transp();
         Matrix smaller_copy(int row, int col);
+        Matrix invers();
+        Matrix get_ident();
         double det();
-
-    // Resolve Operations
-        vector<double> gauss_jordan();
 
     // Constructors
         Matrix();
-        Matrix(int s);
-        Matrix(int r, int c);
-        Matrix(int s, vector<vector<double>> m, vector<double> b_m);
-        Matrix(int s, vector<vector<double>> m);
-        Matrix(int r, int c, vector<vector<double>> , vector<double> b_m);
+        Matrix(vector<vector<double>> m);
     private:
-        void setSize();
-        void setSize(int s);
-        void setSize(int r, int c);
         void fillMatrix();
-        void fillMatrix(vector<vector<double>> m, vector<double> b_m);
-        void fillMatrix(vector<vector<double>> m);
 };
 
 #endif // MATRIX_H

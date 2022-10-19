@@ -2,77 +2,26 @@
 #include <cmath>
 #include <vector>
 
-
-void print_row(vector<double> row){
-    cout << "|";
-    for(auto &i : row){
-        cout << i << " ";
-    }
-    cout << "|" << endl;
-}
-
 // Constructor
 
 Matrix::Matrix(){
-    setSize();
     fillMatrix();
 }
 
-Matrix::Matrix(int s){
-    setSize(s);
-    fillMatrix();
-}
-
-Matrix::Matrix(int r, int c){
-    setSize(r, c);
-    fillMatrix();
-}
-
-Matrix::Matrix(int s, vector<vector<double>> m, vector<double> b_m){
-    setSize(s);
-    fillMatrix(m, b_m);
-}
-
-Matrix::Matrix(int s, vector<vector<double>> m){
-    setSize(s);
-    fillMatrix(m);
-}
-
-Matrix::Matrix(int r, int c, vector<vector<double>> m, vector<double> b_m){
-    setSize(r, c);
-    fillMatrix(m, b_m);
-}
-
-// Definiendo tamanio de la matriz
-
-void Matrix::setSize(){
-    int size = 0;
-    cout << "Ingresa el tamanio de la matriz" << endl;
-    cin >> size;
-
-    rows = size;
-    cols = size;
-    rect_size = size;
-}
-
-void Matrix::setSize(int s){
-    rows = s;
-    cols = s;
-    rect_size = s;
-}
-
-void Matrix::setSize(int r, int c){
-    rows = r;
-    cols = c;
-
-    if(rows == cols){
-        rect_size = rows;
-    }
+Matrix::Matrix(vector<vector<double>> m){
+    matrix = m;
+    rows = matrix.size();
+    cols = matrix.at(0).size();
 }
 
 // Llenado de la matriz
 
 void Matrix::fillMatrix(){
+    cout << "Numero de filas (rows): ";
+    cin >> rows;
+    cout << "Numero de columnas (cols): ";
+    cin >> cols;
+
     double new_value = 0;
 
     cout << "Matrix" << endl;
@@ -85,85 +34,99 @@ void Matrix::fillMatrix(){
             matrix.at(i).push_back(new_value);
         }
     }
-
-    cout << "B_Matrix" << endl;
-
-    for(int i = 0; i < rows; i++){
-        cout << "B[" << i +1 << "] => ";
-        cin >> new_value;
-        b_matrix.push_back(new_value);
-    }
-}
-
-void Matrix::fillMatrix(vector<vector<double>> m, vector<double> b_m){
-    matrix = m;
-    b_matrix = b_m;
-}
-
-void Matrix::fillMatrix(vector<vector<double>> m){
-    matrix = m;
-}
-
-// Funciones auxiliares
-
-void Matrix::print_matrix(){
-    for(int i = 0; i < rows; i++){
-        cout << "| ";
-        for(int j = 0; j < cols; j++){
-            cout << matrix.at(i).at(j) << ", ";
-        }
-        if(b_flag){
-            cout << "| " << b_matrix.at(i);
-        }
-
-        cout << " |" << endl;
-    }
-}
-
-void Matrix::print_matrix(vector<vector<double>> m){
-    for(int i = 0; i < m.size(); i++){
-        cout << "|\t";
-        for(int j = 0; j < m.at(i).size(); j++){
-            cout << m.at(i).at(j) << "\t";
-        }
-        cout << "|" << endl;
-    }
-}
-
-void Matrix::clean(){
-    matrix.clear();
-    b_matrix.clear();
 }
 
 // Operaciones de matriz
-
-void Matrix::sum(int row_to_sum, int row){
-    for(int j = 0; j < cols; j++){
-        matrix.at(row_to_sum).at(j) += matrix.at(row).at(j);
+ostream& operator<<(ostream &out, const Matrix& mt){
+    for(auto row : mt.matrix){
+        out << "|\t";
+        for(auto col : row){
+            out << col << "\t";
+        }
+        out << "|\n";
     }
-
-    b_matrix.at(row_to_sum) += b_matrix.at(row);
+    return out;
 }
 
-void Matrix::sum(int row_to_sum, int row, double escalar){
-    for(int j = 0; j < cols; j++){
-        matrix.at(row_to_sum).at(j) += ( matrix.at(row).at(j) * escalar );
+Matrix Matrix::operator+(const Matrix& mt2){
+    vector<vector<double>> f_mt (matrix.size(), vector<double> (matrix.at(0).size() ));
+    for(int i = 0; i < matrix.size(); i++){
+        for(int j = 0; j < matrix.at(0).size(); j++){
+            f_mt.at(i).at(j) = matrix.at(i).at(j) + mt2.matrix.at(i).at(j);
+        }
     }
 
-    b_matrix.at(row_to_sum) += (b_matrix.at(row) * escalar);
+    return Matrix (f_mt);
 }
 
-void Matrix::product(int row_to_prd, double num){
-    for(int j = 0; j < cols; j++){
-        matrix.at(row_to_prd).at(j) *= num;
+Matrix Matrix::operator*(const Matrix &mt2){
+    int n_rows_sz = matrix.size();
+    int n_cols_sz = mt2.matrix.at(0).size();
+
+    vector<vector<double>> f_mt (n_rows_sz, vector<double> (n_cols_sz) );
+
+    for(int k = 0; k < f_mt.size(); k++){
+
+        for(int i = 0; i < f_mt.size(); i++){
+            for(int j = 0; j < f_mt.at(0).size(); j++){
+
+                f_mt.at(i).at(j) += matrix.at(i).at(k) * mt2.matrix.at(k).at(j);
+            }
+        }
     }
 
-    b_matrix.at(row_to_prd) *= num;
+    return Matrix(f_mt);
+}
+
+void Matrix::set_row(int row_index, vector<double> new_row){
+    if(matrix.at(row_index).size() == new_row.size()){
+        matrix.at(row_index) = new_row;
+    }
+}
+
+vector<double> Matrix::sum_row(int row_to_sum, int row){
+    vector<double> row_sum = matrix.at(row_to_sum);
+
+    for(int j = 0; j < cols; j++){
+        row_sum.at(j) += matrix.at(row).at(j);
+    }
+
+    return row_sum;
+}
+
+vector<double> Matrix::sum_row(int row_to_sum, int row, double escalar){
+    vector<double> row_sum = matrix.at(row_to_sum);
+
+    for(int j = 0; j < cols; j++){
+        row_sum.at(j) += ( matrix.at(row).at(j) * escalar );
+    }
+
+    return row_sum;
+}
+
+vector<double> Matrix::product_row(int row_to_prd, double num){
+    vector<double> row_prd = matrix.at(row_to_prd);
+
+    for(int j = 0; j < cols; j++){
+        row_prd.at(j) *= num;
+    }
+
+    return row_prd;
 }
 
 // Operaciones avanzadas
-Matrix Matrix::copy(){
-    return Matrix(rows, cols, matrix, b_matrix);
+Matrix Matrix::get_ident(){
+    vector<vector<double>> idn (rows, vector<double> (cols, 0));
+    
+    for(int i = 0; i < idn.size(); i++){
+        for(int j = 0; j < idn.at(0).size(); j++){
+            if(i == j){
+                idn.at(i).at(j) = 1;
+            }
+        }
+    }
+
+    return Matrix (idn);
 }
 
 Matrix Matrix::smaller_copy(int row, int col){
@@ -174,11 +137,10 @@ Matrix Matrix::smaller_copy(int row, int col){
     }
     proto_m.erase(proto_m.begin() + row);
 
-    Matrix pm(rect_size - 1, proto_m);
-    return Matrix(rect_size - 1, proto_m);
+    return Matrix (proto_m);
 }
 
-vector<vector<double>> Matrix::transp(){
+Matrix Matrix::transp(){
     vector<vector<double>> aux_m (cols, vector<double> (rows));
 
     for(int i = 0; i < rows; i++){
@@ -187,18 +149,21 @@ vector<vector<double>> Matrix::transp(){
         }
     }
 
-    print_matrix(aux_m);
-    return aux_m;
+    return Matrix (aux_m);
 }
 
 double Matrix::det(){
     double d = 0;
     int matrix_sign = -1;
 
-    if(rect_size == 2){
+    if(rows != cols){
+        return -1;
+    }
+
+    if(rows == 2 && cols == 2){
         d = (matrix.at(0).at(0) * matrix.at(1).at(1)) - (matrix.at(0).at(1) * matrix.at(1).at(0));
     }else{
-        for(int i = 0; i < rect_size; i++){
+        for(int i = 0; i < rows; i++){
             d = d + pow(matrix_sign, i) * matrix.at(0).at(i) * smaller_copy(0, i).det();
         }
     }
@@ -206,33 +171,24 @@ double Matrix::det(){
     return d;
 }
 
-// Operaciones finales
+Matrix Matrix::invers(){
+    Matrix m_inv(get_ident());
+    Matrix m_copy (matrix);
 
-vector<double> Matrix::gauss_jordan(){
-    Matrix full_system (rect_size, matrix, b_matrix);
+    for(int k = 0; k < m_copy.matrix.size(); k++){
+        double divider = 1 / m_copy.matrix.at(k).at(k);
 
-    int i, j = 0;
-    
-    for(int k = 0; k < full_system.matrix.size(); k++){
-        double divisor = 1 / full_system.matrix.at(k).at(k);
-        // Creating pivot
-        full_system.product(k, divisor);
+        m_inv.set_row(k, m_inv.product_row(k, divider));
+        m_copy.set_row(k, m_copy.product_row(k, divider)) ;
 
-        for(i = 0; i < full_system.matrix.size(); i++){
+        for(int i = 0; i < m_copy.matrix.size(); i++){
             if(i == k){
                 continue;
             }
-            // Creating line of zeros
-            double sub_escalar = full_system.matrix.at(i).at(k);
-            full_system.sum(i, k, -sub_escalar);
-
+            m_inv.set_row(i, m_inv.sum_row(i, k, -m_copy.matrix.at(i).at(k)) );
+            m_copy.set_row(i, m_copy.sum_row(i, k, -m_copy.matrix.at(i).at(k)) );
         }
     }
 
-    full_system.print_matrix();
-
-    return full_system.b_matrix;
+    return m_inv;
 }
-
-
-

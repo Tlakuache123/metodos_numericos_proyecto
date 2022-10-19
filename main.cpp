@@ -20,13 +20,11 @@ int main (int argc, char *argv[])
         {3, 1, -2},
         {-1, 2, 5}
     };
-    vector<double> bm = {2, 9, -5};
 
-    Matrix x(size, m, bm);
-    x.print_matrix();
-    cout << "Guass-Jordan" << endl;
-    x.gauss_jordan();
+    Matrix x(m);
+    cout << x << endl;
+    cout << x.get_ident() << endl;
+    cout << x.invers() << endl;
 
-    cout << "Determinante: " << x.det() << endl;
     return 0;
 }
