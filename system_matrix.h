@@ -18,7 +18,7 @@ public:
     // Constructors
     SystemMatrix();
     SystemMatrix(vector<vector<double>> cmp_x,vector<vector<double>> cmp_b);
-    Matrix gauss_partitions();
+    void gauss_partitions();
 private:
     int complete_rows;
     int complete_cols;

@@ -76,10 +76,10 @@ Matrix Matrix::operator*(const Matrix &mt2){
 
     vector<vector<double>> f_mt (n_rows_sz, vector<double> (n_cols_sz) );
 
-    for(int k = 0; k < f_mt.size(); k++){
+    for(int i = 0; i < n_rows_sz; i++){
 
-        for(int i = 0; i < f_mt.size(); i++){
-            for(int j = 0; j < f_mt.at(0).size(); j++){
+        for(int j = 0; j < n_cols_sz; j++){
+            for(int k = 0; k < mt2.matrix.size(); k++){
 
                 f_mt.at(i).at(j) += matrix.at(i).at(k) * mt2.matrix.at(k).at(j);
             }
