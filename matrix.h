@@ -23,6 +23,7 @@ class Matrix {
 
         friend ostream& operator<<(ostream &out, const Matrix& mt);
         Matrix operator+(Matrix const &mt2);
+        Matrix operator-(Matrix const &mt2);
         Matrix operator*(Matrix const &mt2);
 
     // Advance Operations

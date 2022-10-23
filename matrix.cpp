@@ -1,5 +1,4 @@
 #include "matrix.h"
-#include <cmath>
 #include <vector>
 
 // Constructor
@@ -53,6 +52,18 @@ Matrix Matrix::operator+(const Matrix& mt2){
     for(int i = 0; i < matrix.size(); i++){
         for(int j = 0; j < matrix.at(0).size(); j++){
             f_mt.at(i).at(j) = matrix.at(i).at(j) + mt2.matrix.at(i).at(j);
+        }
+    }
+
+    return Matrix (f_mt);
+}
+
+
+Matrix Matrix::operator-(const Matrix& mt2){
+    vector<vector<double>> f_mt (matrix.size(), vector<double> (matrix.at(0).size() ));
+    for(int i = 0; i < matrix.size(); i++){
+        for(int j = 0; j < matrix.at(0).size(); j++){
+            f_mt.at(i).at(j) = matrix.at(i).at(j) - mt2.matrix.at(i).at(j);
         }
     }
 
