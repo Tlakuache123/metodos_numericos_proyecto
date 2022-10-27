@@ -9,8 +9,8 @@ public:
     Matrix complete_x = vector<vector<double>> {{}};
     Matrix complete_b = vector<vector<double>> {{}};
 
-    vector<Matrix> complete_x_partitions;
-    vector<Matrix> complete_b_partitions;
+    vector<Matrix> cmp_x_part;
+    vector<Matrix> cmp_b_part;
 
     // Methods
     void printPartitions();

@@ -20,13 +20,13 @@ void SystemMatrix::create_partitions(){
     int mat_size = complete_x.matrix.size();
     int sep_index = floor(mat_size / 2.0);
 
-    complete_x_partitions.push_back( extract_partition(0, 0, sep_index, sep_index) );
-    complete_x_partitions.push_back( extract_partition(0, sep_index, sep_index, mat_size) );
-    complete_x_partitions.push_back( extract_partition(sep_index, 0, mat_size, sep_index) );
-    complete_x_partitions.push_back( extract_partition(sep_index, sep_index, mat_size, mat_size) );
+    cmp_x_part.push_back( extract_partition(0, 0, sep_index, sep_index) );
+    cmp_x_part.push_back( extract_partition(0, sep_index, sep_index, mat_size) );
+    cmp_x_part.push_back( extract_partition(sep_index, 0, mat_size, sep_index) );
+    cmp_x_part.push_back( extract_partition(sep_index, sep_index, mat_size, mat_size) );
 
-    complete_b_partitions.push_back( b_extract_partition(0, sep_index) );
-    complete_b_partitions.push_back( b_extract_partition(sep_index, mat_size));
+    cmp_b_part.push_back( b_extract_partition(0, sep_index) );
+    cmp_b_part.push_back( b_extract_partition(sep_index, mat_size));
 }
 
 Matrix SystemMatrix::b_extract_partition(int init, int final){
@@ -63,18 +63,19 @@ void SystemMatrix::gauss_partitions(){
     // Diagonales cuadradas [0] && [3]
     // complete_x_partitions = [0] [1] [2] [3]
     // complete_b_partitions = [0] [1]
+    SystemMatrix aux_sys = *this;
 
-    complete_x_partitions.at(1) = complete_x_partitions.at(0).invers() * complete_x_partitions.at(1);
-    complete_b_partitions.at(0) = complete_x_partitions.at(0).invers() * complete_b_partitions.at(0);
-    complete_x_partitions.at(3) = complete_x_partitions.at(3) - (complete_x_partitions.at(2) * complete_x_partitions.at(1));
-    complete_b_partitions.at(1) = complete_b_partitions.at(1) - (complete_x_partitions.at(2) * complete_b_partitions.at(0));
+    aux_sys.cmp_x_part.at(1) = aux_sys.cmp_x_part.at(0).invers() * aux_sys.cmp_x_part.at(1);
+    aux_sys.cmp_b_part.at(0) = aux_sys.cmp_x_part.at(0).invers() * aux_sys.cmp_b_part.at(0);
+    aux_sys.cmp_x_part.at(3) = aux_sys.cmp_x_part.at(3) - (aux_sys.cmp_x_part.at(2) * aux_sys.cmp_x_part.at(1));
+    aux_sys.cmp_b_part.at(1) = aux_sys.cmp_b_part.at(1) - (aux_sys.cmp_x_part.at(2) * aux_sys.cmp_b_part.at(0));
 
-    complete_b_partitions.at(1) = complete_x_partitions.at(3).invers() * complete_b_partitions.at(1);
-    complete_b_partitions.at(0) = complete_b_partitions.at(0) - (complete_x_partitions.at(1) * complete_b_partitions.at(1));
+    aux_sys.cmp_b_part.at(1) = aux_sys.cmp_x_part.at(3).invers() * aux_sys.cmp_b_part.at(1);
+    aux_sys.cmp_b_part.at(0) = aux_sys.cmp_b_part.at(0) - (aux_sys.cmp_x_part.at(1) * aux_sys.cmp_b_part.at(1));
 
     cout << "SOLUCION :" << endl;
-    cout << complete_b_partitions.at(0);
-    cout << complete_b_partitions.at(1);
+    cout << aux_sys.cmp_b_part.at(0);
+    cout << aux_sys.cmp_b_part.at(1);
 }
 
 void SystemMatrix::inversion_partitions(){
@@ -82,13 +83,13 @@ void SystemMatrix::inversion_partitions(){
     // complete_x_partitions = [0] [1] [2] [3]
     // complete_b_partitions = [0] [1]
 
-    Matrix C = complete_x_partitions[0] - complete_x_partitions[1] * ( complete_x_partitions[3].invers() * complete_x_partitions[2] );
-    Matrix D = complete_x_partitions[1] * complete_x_partitions[3].invers();
-    Matrix E = complete_x_partitions[3].invers() * complete_x_partitions[2];
-    Matrix F = complete_x_partitions[3].invers() + E * ( C.invers() * D );
+    Matrix C = cmp_x_part[0] - cmp_x_part[1] * ( cmp_x_part[3].invers() * cmp_x_part[2] );
+    Matrix D = cmp_x_part[1] * cmp_x_part[3].invers();
+    Matrix E = cmp_x_part[3].invers() * cmp_x_part[2];
+    Matrix F = cmp_x_part[3].invers() + E * ( C.invers() * D );
 
-    Matrix x1 = C.invers() * ( complete_b_partitions.at(0) - D * complete_b_partitions.at(1) );
-    Matrix x2 = (E * -1) * ( C.invers() * complete_b_partitions.at(0) ) + F * complete_b_partitions.at(1);
+    Matrix x1 = C.invers() * ( cmp_b_part.at(0) - D * cmp_b_part.at(1) );
+    Matrix x2 = (E * -1) * ( C.invers() * cmp_b_part.at(0) ) + F * cmp_b_part.at(1);
 
     cout << "SOLUCION: " << endl;
     cout << x1;
@@ -98,11 +99,11 @@ void SystemMatrix::inversion_partitions(){
 
 void SystemMatrix::printPartitions(){
     cout << "[X] particiones: " << endl;
-    for(auto &mat : complete_x_partitions){
+    for(auto &mat : cmp_x_part){
         cout << mat << endl;
     }
     cout << "[B] particiones: " << endl;
-    for(auto &mat : complete_b_partitions){
+    for(auto &mat : cmp_b_part){
         cout << mat << endl;
     }
 }
