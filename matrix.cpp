@@ -70,6 +70,17 @@ Matrix Matrix::operator-(const Matrix& mt2){
     return Matrix (f_mt);
 }
 
+Matrix Matrix::operator*(const double& escalar){
+    vector<vector<double>> f_mt (matrix.size(), vector<double> (matrix.at(0).size() ));
+    for(int i = 0; i < matrix.size(); i++){
+        for(int j = 0; j < matrix.at(0).size(); j++){
+            f_mt.at(i).at(j) = matrix.at(i).at(j) * escalar;
+        }
+    }
+
+    return Matrix (f_mt);
+}
+
 Matrix Matrix::operator*(const Matrix &mt2){
     int n_rows_sz = matrix.size();
     int n_cols_sz = mt2.matrix.at(0).size();

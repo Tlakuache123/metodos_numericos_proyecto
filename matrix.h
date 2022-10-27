@@ -25,6 +25,7 @@ class Matrix {
         Matrix operator+(Matrix const &mt2);
         Matrix operator-(Matrix const &mt2);
         Matrix operator*(Matrix const &mt2);
+        Matrix operator*(const double& escalar);
 
     // Advance Operations
         Matrix transp();

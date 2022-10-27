@@ -15,5 +15,23 @@ void print_metodos(){
 
 int main (int argc, char *argv[])
 {
+    vector<vector<double>> mx = {
+        {4, 1, 1, 1, 4},
+        {9, 2, 3, 2, 5},
+        {1, -6, 3, 1, 0},
+        {2, 4, -4, 2, 3},
+        {3, 2, 5, 3, 1}
+    };
+    vector<vector<double>> mb = {
+        {5},
+        {1},
+        {1},
+        {3},
+        {4}
+    };
+
+    SystemMatrix new_system (mx, mb);
+    new_system.gauss_partitions();
+    new_system.inversion_partitions();
     return 0;
 }
