@@ -6,6 +6,7 @@ using namespace std;
 #include "falsaPos.h"
 #include "newton.h"
 #include "matrix.h"
+#include "secante.h"
 #include "system_matrix.h"
 
 void print_metodos(){
@@ -16,6 +17,5 @@ void print_metodos(){
 
 int main (int argc, char *argv[])
 {
-    biseccion();
     return 0;
 }
