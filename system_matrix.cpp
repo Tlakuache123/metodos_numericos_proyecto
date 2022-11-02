@@ -7,12 +7,12 @@
 SystemMatrix::SystemMatrix(){
     complete_x = Matrix();
     complete_b = Matrix();
+    create_partitions();
 }
 
 SystemMatrix::SystemMatrix(vector<vector<double>> cmp_x,vector<vector<double>> cmp_b){
     complete_x = Matrix(cmp_x);
     complete_b = Matrix(cmp_b);
-    cout << complete_x << endl;
     create_partitions();
 }
 

@@ -31,7 +31,9 @@ int main (int argc, char *argv[])
     };
 
     SystemMatrix new_system (mx, mb);
+    cout << "Gauss particionado" << endl;
     new_system.gauss_partitions();
+    cout << "Inversion particionado" << endl;
     new_system.inversion_partitions();
     return 0;
 }
