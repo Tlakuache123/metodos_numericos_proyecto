@@ -98,12 +98,22 @@ void SystemMatrix::inversion_partitions(){
 }
 
 void SystemMatrix::intercambio(){
+    vector<int> from_change;
+    vector<int> to_change;
+
     SystemMatrix aux_sys = *this;
     int sys_size = aux_sys.complete_x.matrix.size();
+    bool aprox_flag = false;
 
     for(int k = 0; k < sys_size; k++){
+        // Checar si el pivote es 0 -> Cambio de rows
+
         double pivot = aux_sys.complete_x.matrix.at(k).at(k);
-        
+        if(pivot == 0){
+            pivot = 0.00001;
+            aprox_flag = true;
+        }
+
         // Toda la matriz menos row/col pivote
         for(int i = 0; i < sys_size; i++){
             for(int j = 0; j < sys_size; j++){
@@ -133,9 +143,17 @@ void SystemMatrix::intercambio(){
         aux_sys.complete_x.matrix.at(k).at(k) = 1 / pivot;
     }
 
+    // Regresar original matrix x
+    for(int i = 0; i < from_change.size(); i++){
+        aux_sys.complete_x.switch_row(from_change.at(i), to_change.at(i));
+    }
+
     // SOLUCION
     Matrix sol_matrix = aux_sys.complete_x * aux_sys.complete_b;
     cout << "Solucion" << endl;
+    if(aprox_flag){
+        cout << "APROXIMADA" << endl;
+    }
     cout << sol_matrix << endl;
 }
 
