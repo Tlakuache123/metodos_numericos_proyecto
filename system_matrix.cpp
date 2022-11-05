@@ -97,6 +97,48 @@ void SystemMatrix::inversion_partitions(){
 
 }
 
+void SystemMatrix::intercambio(){
+    SystemMatrix aux_sys = *this;
+    int sys_size = aux_sys.complete_x.matrix.size();
+
+    for(int k = 0; k < sys_size; k++){
+        double pivot = aux_sys.complete_x.matrix.at(k).at(k);
+        
+        // Toda la matriz menos row/col pivote
+        for(int i = 0; i < sys_size; i++){
+            for(int j = 0; j < sys_size; j++){
+                if(i == k || j == k){
+                    continue;
+                }
+
+                double new_num = aux_sys.complete_x.matrix.at(i).at(j);
+                double row_pivot = aux_sys.complete_x.matrix.at(i).at(k);
+                double col_pivot = aux_sys.complete_x.matrix.at(k).at(j);
+
+                new_num = new_num - ((row_pivot * col_pivot) / pivot);
+                aux_sys.complete_x.matrix.at(i).at(j) = new_num;
+            }
+        }
+
+        // Col pivote
+        for(int i = 0; i < sys_size; i++){
+            aux_sys.complete_x.matrix.at(i).at(k) = aux_sys.complete_x.matrix.at(i).at(k) / pivot;
+        }
+
+        // Row pivote
+        for(int i = 0; i < sys_size; i++){
+            aux_sys.complete_x.matrix.at(k).at(i) = aux_sys.complete_x.matrix.at(k).at(i) / -pivot;
+        }
+
+        aux_sys.complete_x.matrix.at(k).at(k) = 1 / pivot;
+    }
+
+    // SOLUCION
+    Matrix sol_matrix = aux_sys.complete_x * aux_sys.complete_b;
+    cout << "Solucion" << endl;
+    cout << sol_matrix << endl;
+}
+
 void SystemMatrix::printPartitions(){
     cout << "[X] particiones: " << endl;
     for(auto &mat : cmp_x_part){

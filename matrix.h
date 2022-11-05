@@ -21,6 +21,8 @@ class Matrix {
         vector<double> sum_row(int row_to_sum, int row, double escalar);
         vector<double> product_row(int row_to_prd, double num);
 
+        void switch_row(int row1, int row2);
+
         friend ostream& operator<<(ostream &out, const Matrix& mt);
         Matrix operator+(Matrix const &mt2);
         Matrix operator-(Matrix const &mt2);

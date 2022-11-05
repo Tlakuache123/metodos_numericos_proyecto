@@ -40,7 +40,7 @@ ostream& operator<<(ostream &out, const Matrix& mt){
     for(auto row : mt.matrix){
         out << "|\t";
         for(auto col : row){
-            out << col << "\t";
+            out << col << " \t";
         }
         out << "|\n";
     }
@@ -98,6 +98,12 @@ Matrix Matrix::operator*(const Matrix &mt2){
     }
 
     return Matrix(f_mt);
+}
+
+void Matrix::switch_row(int row1, int row2){
+    vector<double> aux_row = matrix.at(row1);
+    matrix.at(row1) = matrix.at(row2);
+    matrix.at(row2) = aux_row;
 }
 
 void Matrix::set_row(int row_index, vector<double> new_row){

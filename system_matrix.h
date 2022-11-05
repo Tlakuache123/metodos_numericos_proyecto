@@ -20,6 +20,7 @@ public:
     SystemMatrix(vector<vector<double>> cmp_x,vector<vector<double>> cmp_b);
     void gauss_partitions();
     void inversion_partitions();
+    void intercambio();
 private:
     int complete_rows;
     int complete_cols;
