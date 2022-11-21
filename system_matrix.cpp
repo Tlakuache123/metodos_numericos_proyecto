@@ -318,7 +318,6 @@ void SystemMatrix::relajacion() {
       vec_residuo.at(i) = acomulation - aux_mat_b.matrix.at(i).at(0);
     }
 
-
     // Maximo residuo
     double max_r = 0;
     for (auto vr : vec_residuo) {
@@ -333,7 +332,7 @@ void SystemMatrix::relajacion() {
     }
 
     vec_solucion.at(index_max_r) = max_r + aux_vec.at(index_max_r);
-    for(auto vs: vec_solucion){
+    for (auto vs : vec_solucion) {
       cout << vs << endl;
     }
   } while (!check_iteration_error(vec_solucion, aux_vec, error));

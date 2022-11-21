@@ -40,32 +40,14 @@ int get_metodo_matriz() {
   cout << "[2]\t Guass-Jordan particionado" << endl;
   cout << "[3]\t Intercambio" << endl;
   cout << "[4]\t Jacobi" << endl;
+  cout << "[5]\t Gauss Seidel" << endl;
+  cout << "[6]\t Relajacion" << endl;
   cout << "[+] => ";
   cin >> option;
   return option;
 }
 
 int main(int argc, char *argv[]) {
-  vector<vector<double>> mx {
-    {5, 0.4, 1.3, 2, 1},
-    {1.3, 9, 3, 2.2, 0.4},
-    {0.5, 0.8, 7, 2, 3},
-    {2, 5, 1, 10, 0.8},
-    {1, 3, 4, 2, 10.5}
-  };
-
-  vector<vector<double>> my {
-    {3},
-    {2.4},
-    {1.8},
-    {3},
-    {4.1}
-  };
-
-  SystemMatrix sys(mx, my);
-  sys.relajacion();
-  return 1;
-
   int opt = get_sub_menu();
   // Solucion de Ecuaciones
   if (opt == 1) {
@@ -113,6 +95,14 @@ int main(int argc, char *argv[]) {
 
       case 4:
         system.jacobi();
+        break;
+
+      case 5:
+        system.gauss_seidel();
+        break;
+
+      case 6:
+        system.relajacion();
         break;
 
       default:
