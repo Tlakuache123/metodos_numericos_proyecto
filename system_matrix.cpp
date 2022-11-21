@@ -1,6 +1,8 @@
 #include "system_matrix.h"
+#include "matrix.h"
 #include <cmath>
 #include <iostream>
+#include <iterator>
 #include <vector>
 
 using namespace std;
@@ -257,9 +259,9 @@ void SystemMatrix::gauss_seidel() {
         if (i == j) {
           continue;
         }
-        if (i < j){
+        if (i < j) {
           acomulation += complete_x.matrix.at(i).at(j) * aux_vec.at(j);
-        }else{
+        } else {
           acomulation += complete_x.matrix.at(i).at(j) * vec_solucion.at(j);
         }
       }
@@ -280,6 +282,67 @@ void SystemMatrix::gauss_seidel() {
     cout << "|\t " << sol << " \t|" << endl;
   }
 }
+
+void SystemMatrix::relajacion() {
+  Matrix aux_mat_x = complete_x;
+  Matrix aux_mat_b = complete_b;
+  vector<double> vec_solucion(aux_mat_x.rows, 0);
+  vector<double> aux_vec(aux_mat_x.rows, 0);
+  vector<double> vec_residuo(aux_mat_x.rows, 0);
+  double error = 0.0001;
+  int iteracion = 0;
+
+  cout << "RELAJACION" << endl;
+  cout << "[!] Ingresa la toleracia de error" << endl;
+  cout << "[+] => ";
+  cin >> error;
+
+  for (int i = 0; i < aux_mat_x.rows; i++) {
+    double pivot = -aux_mat_x.matrix.at(i).at(i);
+    for (int j = 0; j < aux_mat_x.cols; j++) {
+      aux_mat_x.matrix.at(i).at(j) /= pivot;
+    }
+    aux_mat_b.matrix.at(i).at(0) /= pivot;
+  }
+
+  do {
+    cout << "\tITERACION " << iteracion << endl;
+    iteracion += 1;
+    aux_vec = vec_solucion;
+    // Crear reciduos
+    for (int i = 0; i < aux_mat_x.rows; i++) {
+      double acomulation = 0;
+      for (int j = 0; j < aux_mat_x.cols; j++) {
+        acomulation += vec_solucion.at(j) * aux_mat_x.matrix.at(i).at(j);
+      }
+      vec_residuo.at(i) = acomulation - aux_mat_b.matrix.at(i).at(0);
+    }
+
+
+    // Maximo residuo
+    double max_r = 0;
+    for (auto vr : vec_residuo) {
+      if (abs(vr) > abs(max_r))
+        max_r = vr;
+    }
+    // Index max residuo
+    int index_max_r = 0;
+    for (int i = 0; i < vec_residuo.size(); i++) {
+      if (abs(vec_residuo.at(i)) == abs(max_r))
+        index_max_r = i;
+    }
+
+    vec_solucion.at(index_max_r) = max_r + aux_vec.at(index_max_r);
+    for(auto vs: vec_solucion){
+      cout << vs << endl;
+    }
+  } while (!check_iteration_error(vec_solucion, aux_vec, error));
+  cout << "SOLUCION" << endl;
+  for (auto sol : vec_solucion) {
+    cout << "|\t " << sol << " \t|" << endl;
+  }
+}
+
 void SystemMatrix::printPartitions() {
   cout << "[X] particiones: " << endl;
   for (auto &mat : cmp_x_part) {

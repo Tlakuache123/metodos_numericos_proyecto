@@ -23,6 +23,7 @@ public:
   void intercambio();
   void jacobi();
   void gauss_seidel();
+  void relajacion();
 
 private:
   int complete_rows;
