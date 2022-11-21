@@ -22,6 +22,7 @@ public:
   void inversion_partitions();
   void intercambio();
   void jacobi();
+  void gauss_seidel();
 
 private:
   int complete_rows;
