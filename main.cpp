@@ -39,6 +39,7 @@ int get_metodo_matriz() {
   cout << "[1]\t Inversion particionado" << endl;
   cout << "[2]\t Guass-Jordan particionado" << endl;
   cout << "[3]\t Intercambio" << endl;
+  cout << "[4]\t Jacobi" << endl;
   cout << "[+] => ";
   cin >> option;
   return option;
@@ -88,6 +89,10 @@ int main(int argc, char *argv[]) {
 
       case 3:
         system.intercambio();
+        break;
+
+      case 4:
+        system.jacobi();
         break;
 
       default:

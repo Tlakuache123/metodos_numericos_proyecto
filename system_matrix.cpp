@@ -174,6 +174,67 @@ void SystemMatrix::intercambio() {
   cout << sol_matrix << endl;
 }
 
+bool SystemMatrix::check_iteration_error(vector<double> vec1,
+                                         vector<double> vec2, double error) {
+  if (vec1.size() != vec2.size()) {
+    cout << "[!][check_iteration_error]VECTORES DE DIFERENTE TAMAÑO" << endl;
+    return false;
+  }
+
+  for (int i = 0; i < vec1.size(); i++) {
+    if (abs(vec2.at(i) - vec1.at(i)) > error) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+void SystemMatrix::jacobi() {
+  cout << 1.0 / 4.0 << endl;
+  vector<double> vec_solucion(complete_x.rows, 0);
+  vector<double> aux_vec(complete_x.rows, 0);
+  double error = 0.0001;
+  int iteracion = 0;
+
+  cout << "[!] Ingresa la toleracia de error" << endl;
+  cout << "[+] => ";
+  cin >> error;
+
+  // Ecuacion recursiva
+  do {
+    // Copy vec
+    for (int i = 0; i < vec_solucion.size(); i++) {
+      aux_vec.at(i) = vec_solucion.at(i);
+    }
+    for (int i = 0; i < complete_x.matrix.size(); i++) {
+      double acomulation = 0;
+
+      for (int j = 0; j < complete_x.matrix.at(0).size(); j++) {
+        if (i == j) {
+          continue;
+        }
+
+        acomulation += complete_x.matrix.at(i).at(j) * aux_vec.at(j);
+      }
+
+      vec_solucion.at(i) = (1 / complete_x.matrix.at(i).at(i)) *
+                           (complete_b.matrix.at(i).at(0) - acomulation);
+    }
+
+    // Imprimir iteracion
+    cout << "\t Iteracion [" << iteracion << "]" << endl;
+    iteracion += 1;
+    for (auto vc : vec_solucion) {
+      cout << vc << endl;
+    }
+  } while (!check_iteration_error(vec_solucion, aux_vec, error));
+  cout << "SOLUCION" << endl;
+  for (auto sol : vec_solucion) {
+    cout << "|\t " << sol << " \t|" << endl;
+  }
+}
+
 void SystemMatrix::printPartitions() {
   cout << "[X] particiones: " << endl;
   for (auto &mat : cmp_x_part) {
