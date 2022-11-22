@@ -24,6 +24,7 @@ public:
   void jacobi();
   void gauss_seidel();
   void relajacion();
+  void cholesky();
 
 private:
   int complete_rows;

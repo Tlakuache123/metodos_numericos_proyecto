@@ -67,6 +67,17 @@ Matrix SystemMatrix::extract_partition(int row_init, int col_init,
   return Matrix(sub_mat);
 }
 
+void SystemMatrix::printPartitions() {
+  cout << "[X] particiones: " << endl;
+  for (auto &mat : cmp_x_part) {
+    cout << mat << endl;
+  }
+  cout << "[B] particiones: " << endl;
+  for (auto &mat : cmp_b_part) {
+    cout << mat << endl;
+  }
+}
+
 void SystemMatrix::gauss_partitions() {
   // Diagonales cuadradas [0] && [3]
   // complete_x_partitions = [0] [1] [2] [3]
@@ -342,13 +353,67 @@ void SystemMatrix::relajacion() {
   }
 }
 
-void SystemMatrix::printPartitions() {
-  cout << "[X] particiones: " << endl;
-  for (auto &mat : cmp_x_part) {
-    cout << mat << endl;
+void SystemMatrix::cholesky() {
+  int m_size = complete_x.rows;
+  Matrix mat_l(vector<vector<double>>(complete_x.rows,
+                                      vector<double>(complete_x.cols, 0)));
+  // Creating L
+  for (int i = 0; i < m_size; i++) {
+    for (int j = 0; j <= i; j++) {
+      double acomulation = 0;
+
+      // Diagonal -> raiz
+      if (i == j) {
+        for (int h = 0; h < j; h++)
+          acomulation += pow(mat_l.matrix.at(j).at(h), 2);
+        mat_l.matrix.at(j).at(j) =
+            sqrt(complete_x.matrix.at(j).at(j) - acomulation);
+      } else {
+        // Elementos no diagonales
+        for (int h = 0; h < j; h++)
+          acomulation += mat_l.matrix.at(i).at(h) * mat_l.matrix.at(j).at(h);
+        mat_l.matrix.at(i).at(j) =
+            (complete_x.matrix.at(i).at(j) - acomulation) /
+            mat_l.matrix.at(j).at(j);
+      }
+    }
   }
-  cout << "[B] particiones: " << endl;
-  for (auto &mat : cmp_b_part) {
-    cout << mat << endl;
+  // Creating U
+  Matrix mat_u = mat_l.transp();
+  cout << "\t[L]" << endl;
+  cout << mat_l << endl;
+  cout << "\t[U]" << endl;
+  cout << mat_u << endl;
+
+  vector<double> vec_solucion;
+
+  // Creando el vector C
+  for (int i = 0; i < m_size; i++) {
+    double acomulation = 0;
+    for (int j = 0; j < i; j++) {
+      acomulation -= mat_l.matrix.at(i).at(j) * vec_solucion.at(j);
+    }
+    acomulation += complete_b.matrix.at(i).at(0);
+    vec_solucion.push_back(1 / mat_l.matrix.at(i).at(i) * acomulation);
+  }
+
+  cout << "\t[Vector C]" << endl;
+  for (auto vs : vec_solucion) {
+    cout << vs << endl;
+  }
+
+  // Creando vector solucion X
+  for (int i = m_size - 1; i >= 0; i--) {
+    double acomulation = 0;
+    for (int j = m_size - 1; j > i; j--) {
+      acomulation -= mat_u.matrix.at(i).at(j) * vec_solucion.at(j);
+    }
+    acomulation += vec_solucion.at(i);
+    vec_solucion.at(i) = (1 / mat_u.matrix.at(i).at(i)) * acomulation;
+  }
+
+  cout << "\t[Solucion X]" << endl;
+  for (auto vs : vec_solucion) {
+    cout << vs << endl;
   }
 }
