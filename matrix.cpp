@@ -32,6 +32,7 @@ void Matrix::fillMatrix() {
       cin >> new_value;
       matrix.at(i).push_back(new_value);
     }
+    cout << "[---]" << endl;
   }
 }
 

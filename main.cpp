@@ -15,7 +15,7 @@ int get_sub_menu() {
   cout << "==\t\t [MENU] \t\t==" << endl;
   cout << "[1]\t Solucion de Ecuaciones" << endl;
   cout << "[2]\t Sistemas de Ecuaciones Lineales" << endl;
-  cout << "[3]\t Factorizacion" << endl;
+  cout << "[3]\t Factorizacion LU" << endl;
   cout << "[+] => ";
   cin >> option;
   return option;
@@ -42,6 +42,16 @@ int get_metodo_matriz() {
   cout << "[4]\t Jacobi" << endl;
   cout << "[5]\t Gauss Seidel" << endl;
   cout << "[6]\t Relajacion" << endl;
+  cout << "[+] => ";
+  cin >> option;
+  return option;
+}
+
+int get_metodo_factorizacion() {
+  int option = 0;
+  cout << "=\t\t[Factorizacion LU]\t\t=" << endl;
+  cout << "[1]\t Cholesky" << endl;
+  cout << "[2]\t Doolittle" << endl;
   cout << "[+] => ";
   cin >> option;
   return option;
@@ -76,39 +86,56 @@ int main(int argc, char *argv[]) {
   }
   // Solucion de Matrices
   if (opt == 2) {
-    if (opt <= 4) {
-      opt = get_metodo_matriz();
-      SystemMatrix system = SystemMatrix();
+    opt = get_metodo_matriz();
+    SystemMatrix system = SystemMatrix();
 
-      switch (opt) {
-      case 1:
-        system.inversion_partitions();
-        break;
+    switch (opt) {
+    case 1:
+      system.inversion_partitions();
+      break;
 
-      case 2:
-        system.gauss_partitions();
-        break;
+    case 2:
+      system.gauss_partitions();
+      break;
 
-      case 3:
-        system.intercambio();
-        break;
+    case 3:
+      system.intercambio();
+      break;
 
-      case 4:
-        system.jacobi();
-        break;
+    case 4:
+      system.jacobi();
+      break;
 
-      case 5:
-        system.gauss_seidel();
-        break;
+    case 5:
+      system.gauss_seidel();
+      break;
 
-      case 6:
-        system.relajacion();
-        break;
+    case 6:
+      system.relajacion();
+      break;
 
-      default:
-        cout << "[!]\t Ingresa una opcion valida" << endl;
-        break;
-      }
+    case 7:
+      system.cholesky();
+      break;
+
+    default:
+      cout << "[!]\t Ingresa una opcion valida" << endl;
+      break;
+    }
+  }
+
+  if (opt == 3) {
+    opt = get_metodo_factorizacion();
+    SystemMatrix system = SystemMatrix();
+
+    switch (opt) {
+    case 1:
+      system.cholesky();
+      break;
+
+    default:
+      cout << "[!]\t Ingresa una opcion valida" << endl;
+      break;
     }
   }
   return 0;
