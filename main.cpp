@@ -133,6 +133,10 @@ int main(int argc, char *argv[]) {
       system.cholesky();
       break;
 
+    case 2:
+      system.doolittle();
+      break;
+
     default:
       cout << "[!]\t Ingresa una opcion valida" << endl;
       break;

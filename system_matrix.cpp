@@ -417,3 +417,87 @@ void SystemMatrix::cholesky() {
     cout << vs << endl;
   }
 }
+
+void SystemMatrix::doolittle() {
+  int m_size = complete_x.rows;
+  double acomulation = 0;
+  Matrix mat_l(vector<vector<double>>(complete_x.rows,
+                                      vector<double>(complete_x.cols, 0)));
+  Matrix mat_u(vector<vector<double>>(complete_x.rows,
+                                      vector<double>(complete_x.cols, 0)));
+
+  vector<double> vec_solucion;
+  // Inicializamos diagonal L
+  for (int i = 0; i < m_size; i++) {
+    mat_l.matrix.at(i).at(i) = 1;
+  }
+  // Inicializamos primer renglon U
+  for (int i = 0; i < m_size; i++) {
+    mat_u.matrix.at(0).at(i) = complete_x.matrix.at(0).at(i);
+  }
+  // Inicializamos primera columna L
+  for (int i = 1; i < m_size; i++) {
+    mat_l.matrix.at(i).at(0) =
+        complete_x.matrix.at(i).at(0) / mat_u.matrix.at(0).at(0);
+  }
+
+  // Loop de tamaño - 1 de la matriz
+  for (int i = 0; i < m_size; i++) {
+    // Renglon U
+    for (int k = i; k < m_size; k++) {
+      acomulation = 0;
+      for (int j = 0; j < i; j++) {
+        acomulation += mat_l.matrix.at(i).at(j) * mat_u.matrix.at(j).at(k);
+      }
+
+      mat_u.matrix.at(i).at(k) = complete_x.matrix.at(i).at(k) - acomulation;
+    }
+    // Columna L
+    for (int k = i; k < m_size; k++) {
+      if (i == k)
+        continue;
+      acomulation = 0;
+      for (int j = 0; j < i; j++) {
+        acomulation += mat_l.matrix.at(k).at(j) * mat_u.matrix.at(j).at(i);
+      }
+
+      mat_l.matrix.at(k).at(i) = (complete_x.matrix.at(k).at(i) - acomulation) /
+                                 mat_u.matrix.at(i).at(i);
+    }
+  }
+
+  cout << "\t[L]" << endl;
+  cout << mat_l << endl;
+  cout << "\t[U]" << endl;
+  cout << mat_u << endl;
+
+
+  for (int i = 0; i < m_size; i++) {
+    double acomulation = 0;
+    for (int j = 0; j < i; j++) {
+      acomulation -= mat_l.matrix.at(i).at(j) * vec_solucion.at(j);
+    }
+    acomulation += complete_b.matrix.at(i).at(0);
+    vec_solucion.push_back(1 / mat_l.matrix.at(i).at(i) * acomulation);
+  }
+
+  cout << "\t[Vector C]" << endl;
+  for (auto vs : vec_solucion) {
+    cout << vs << endl;
+  }
+
+  // Creando vector solucion X
+  for (int i = m_size - 1; i >= 0; i--) {
+    double acomulation = 0;
+    for (int j = m_size - 1; j > i; j--) {
+      acomulation -= mat_u.matrix.at(i).at(j) * vec_solucion.at(j);
+    }
+    acomulation += vec_solucion.at(i);
+    vec_solucion.at(i) = (1 / mat_u.matrix.at(i).at(i)) * acomulation;
+  }
+
+  cout << "\t[Solucion X]" << endl;
+  for (auto vs : vec_solucion) {
+    cout << vs << endl;
+  }
+}

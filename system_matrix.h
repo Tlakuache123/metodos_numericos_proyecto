@@ -25,6 +25,7 @@ public:
   void gauss_seidel();
   void relajacion();
   void cholesky();
+  void doolittle();
 
 private:
   int complete_rows;
