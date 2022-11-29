@@ -1,4 +1,5 @@
 #include "matrix.h"
+#include <cmath>
 #include <vector>
 
 // Constructor
@@ -236,4 +237,26 @@ Matrix Matrix::invers() {
   }
 
   return m_inv;
+}
+
+bool Matrix::diagonal_dominante() {
+  if (rows != cols) {
+    return false;
+  }
+  for (int k = 0; k < matrix.size(); k++) {
+    double diagonal = abs(matrix.at(k).at(k));
+    double total = 0;
+    for (int i = 0; i < matrix.size(); i++) {
+      if (i == k) {
+        continue;
+      }
+
+      total += abs(matrix.at(k).at(i));
+    }
+    if (diagonal <= total) {
+      return false;
+    }
+  }
+
+  return true;
 }

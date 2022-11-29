@@ -246,6 +246,19 @@ bool SystemMatrix::check_iteration_error(vector<double> vec1,
 }
 
 void SystemMatrix::jacobi() {
+
+  if(complete_x.rows != complete_x.cols){
+    cout << "[!] Supuesto de aplicacion no cumplido" << endl;
+    cout << "[-] El sistema no tiene N variables con N incognitas" << endl;
+    return;
+  }
+
+  if(!complete_x.diagonal_dominante()){
+    cout << "[!] Supuesto de aplicacion no cumplido" << endl;
+    cout << "[-] Matriz no diagonalmente dominante" << endl;
+    return;
+  }
+
   vector<double> vec_solucion(complete_x.rows, 0);
   vector<double> aux_vec(complete_x.rows, 0);
   double error = 0.1;

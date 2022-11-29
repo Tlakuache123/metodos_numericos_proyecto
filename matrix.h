@@ -35,6 +35,7 @@ public:
   Matrix invers();
   Matrix get_ident();
   double det();
+  bool diagonal_dominante();
 
   // Constructors
   Matrix();
