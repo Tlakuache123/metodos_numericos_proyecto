@@ -82,6 +82,19 @@ void SystemMatrix::gauss_partitions() {
   // Diagonales cuadradas [0] && [3]
   // complete_x_partitions = [0] [1] [2] [3]
   // complete_b_partitions = [0] [1]
+
+  if(complete_x.det() == 0){
+    cout << "[!] Supuesto de aplicacion no cumplido" << endl;
+    cout << "[-] Determinante igual a cero" << endl;
+    return;
+  }
+
+  if(cmp_x_part[0].det() == 0){
+    cout << "[!] Supuesto de aplicacion no cumplido" << endl;
+    cout << "[-] No existe inversa en A11" << endl;
+    return;
+  }
+
   SystemMatrix aux_sys = *this;
 
   aux_sys.cmp_x_part.at(1) =

@@ -200,7 +200,7 @@ double Matrix::det() {
   int matrix_sign = -1;
 
   if (rows != cols) {
-    return -1;
+    return 0;
   }
 
   if (rows == 2 && cols == 2) {
