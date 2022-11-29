@@ -316,7 +316,7 @@ void SystemMatrix::gauss_seidel() {
     return;
   }
 
-  if(complete_x.det() == 0){
+  if(complete_x.diagonal_dominante() == 0){
     cout << "[!] Supuesto de aplicacion no cumplido" << endl;
     cout << "[-] Diagonalmente no dominante" << endl;
     return;
@@ -369,6 +369,24 @@ void SystemMatrix::gauss_seidel() {
 }
 
 void SystemMatrix::relajacion() {
+
+  if(complete_x.rows != complete_x.cols){
+    cout << "[!] Supuesto de aplicacion no cumplido" << endl;
+    cout << "[-] El sistema no tiene N variables con N incognitas" << endl;
+    return;
+  }
+
+  if(complete_x.det() == 0){
+    cout << "[!] Supuesto de aplicacion no cumplido" << endl;
+    cout << "[-] Determinante igual a cero" << endl;
+    return;
+  }
+
+  if(complete_x.diagonal_dominante() == 0){
+    cout << "[!] Supuesto de aplicacion no cumplido" << endl;
+    cout << "[-] Diagonalmente no dominante" << endl;
+    return;
+  }
   Matrix aux_mat_x = complete_x;
   Matrix aux_mat_b = complete_b;
   vector<double> vec_solucion(aux_mat_x.rows, 0);
@@ -377,7 +395,6 @@ void SystemMatrix::relajacion() {
   double error = 0.0001;
   int iteracion = 0;
 
-  cout << "RELAJACION" << endl;
   cout << "[!] Ingresa la toleracia de error" << endl;
   cout << "[+] => ";
   cin >> error;
