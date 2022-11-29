@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
     }
   }
   // Solucion de Matrices
-  if (opt == 2) {
+  else if (opt == 2) {
     opt = get_metodo_matriz();
     SystemMatrix system = SystemMatrix();
 
@@ -124,7 +124,7 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  if (opt == 3) {
+  else if (opt == 3) {
     opt = get_metodo_factorizacion();
     SystemMatrix system = SystemMatrix();
 

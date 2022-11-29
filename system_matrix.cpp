@@ -83,13 +83,13 @@ void SystemMatrix::gauss_partitions() {
   // complete_x_partitions = [0] [1] [2] [3]
   // complete_b_partitions = [0] [1]
 
-  if(complete_x.det() == 0){
+  if (complete_x.det() == 0) {
     cout << "[!] Supuesto de aplicacion no cumplido" << endl;
     cout << "[-] Determinante igual a cero" << endl;
     return;
   }
 
-  if(cmp_x_part[0].det() == 0){
+  if (cmp_x_part[0].det() == 0) {
     cout << "[!] Supuesto de aplicacion no cumplido" << endl;
     cout << "[-] No existe inversa en A11" << endl;
     return;
@@ -123,13 +123,13 @@ void SystemMatrix::inversion_partitions() {
   // Diagonales cuadradas [0] && [3]
   // complete_x_partitions = [0] [1] [2] [3]
   // complete_b_partitions = [0] [1]
-  if(complete_x.det() == 0){
+  if (complete_x.det() == 0) {
     cout << "[!] Supuesto de aplicacion no cumplido" << endl;
     cout << "[-] Determinante igual a cero" << endl;
     return;
   }
 
-  if(cmp_x_part[3].det() == 0){
+  if (cmp_x_part[3].det() == 0) {
     cout << "[!] Supuesto de aplicacion no cumplido" << endl;
     cout << "[-] No existe inversa en la submatrix A22" << endl;
     return;
@@ -150,6 +150,13 @@ void SystemMatrix::inversion_partitions() {
 }
 
 void SystemMatrix::intercambio() {
+
+  if (complete_x.rows != complete_x.cols) {
+    cout << "[!] Supuesto de aplicacion no cumplido" << endl;
+    cout << "[-] El sistema no tiene N variables con N incognitas" << endl;
+    return;
+  }
+
   vector<int> from_change;
   vector<int> to_change;
 
@@ -162,8 +169,19 @@ void SystemMatrix::intercambio() {
 
     double pivot = aux_sys.complete_x.matrix.at(k).at(k);
     if (pivot == 0) {
-      pivot = 0.00001;
-      aprox_flag = true;
+      int pivot_index = k;
+      vector<double> row_pivot = aux_sys.complete_x.matrix.at(k);
+      for (int i = k; i < sys_size; i++) {
+        if (aux_sys.complete_x.matrix.at(i).at(k) != 0) {
+          pivot_index = i;
+          break;
+        }
+      }
+      aux_sys.complete_x.matrix.at(k) =
+          aux_sys.complete_x.matrix.at(pivot_index);
+      aux_sys.complete_x.matrix.at(pivot_index) = row_pivot;
+
+      double pivot = aux_sys.complete_x.matrix.at(k).at(k);
     }
 
     // Toda la matriz menos row/col pivote
@@ -494,7 +512,6 @@ void SystemMatrix::doolittle() {
   cout << mat_l << endl;
   cout << "\t[U]" << endl;
   cout << mat_u << endl;
-
 
   for (int i = 0; i < m_size; i++) {
     double acomulation = 0;
