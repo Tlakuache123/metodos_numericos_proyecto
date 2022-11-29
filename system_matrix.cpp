@@ -247,13 +247,13 @@ bool SystemMatrix::check_iteration_error(vector<double> vec1,
 
 void SystemMatrix::jacobi() {
 
-  if(complete_x.rows != complete_x.cols){
+  if (complete_x.rows != complete_x.cols) {
     cout << "[!] Supuesto de aplicacion no cumplido" << endl;
     cout << "[-] El sistema no tiene N variables con N incognitas" << endl;
     return;
   }
 
-  if(!complete_x.diagonal_dominante()){
+  if (!complete_x.diagonal_dominante()) {
     cout << "[!] Supuesto de aplicacion no cumplido" << endl;
     cout << "[-] Matriz no diagonalmente dominante" << endl;
     return;
@@ -304,19 +304,19 @@ void SystemMatrix::jacobi() {
 
 void SystemMatrix::gauss_seidel() {
 
-  if(complete_x.rows != complete_x.cols){
+  if (complete_x.rows != complete_x.cols) {
     cout << "[!] Supuesto de aplicacion no cumplido" << endl;
     cout << "[-] El sistema no tiene N variables con N incognitas" << endl;
     return;
   }
 
-  if(complete_x.det() == 0){
+  if (complete_x.det() == 0) {
     cout << "[!] Supuesto de aplicacion no cumplido" << endl;
     cout << "[-] Determinante igual a cero" << endl;
     return;
   }
 
-  if(complete_x.diagonal_dominante() == 0){
+  if (complete_x.diagonal_dominante() == 0) {
     cout << "[!] Supuesto de aplicacion no cumplido" << endl;
     cout << "[-] Diagonalmente no dominante" << endl;
     return;
@@ -370,19 +370,19 @@ void SystemMatrix::gauss_seidel() {
 
 void SystemMatrix::relajacion() {
 
-  if(complete_x.rows != complete_x.cols){
+  if (complete_x.rows != complete_x.cols) {
     cout << "[!] Supuesto de aplicacion no cumplido" << endl;
     cout << "[-] El sistema no tiene N variables con N incognitas" << endl;
     return;
   }
 
-  if(complete_x.det() == 0){
+  if (complete_x.det() == 0) {
     cout << "[!] Supuesto de aplicacion no cumplido" << endl;
     cout << "[-] Determinante igual a cero" << endl;
     return;
   }
 
-  if(complete_x.diagonal_dominante() == 0){
+  if (complete_x.diagonal_dominante() == 0) {
     cout << "[!] Supuesto de aplicacion no cumplido" << endl;
     cout << "[-] Diagonalmente no dominante" << endl;
     return;
@@ -445,25 +445,25 @@ void SystemMatrix::relajacion() {
 }
 
 void SystemMatrix::cholesky() {
-  if(complete_x.rows != complete_x.cols){
+  if (complete_x.rows != complete_x.cols) {
     cout << "[!] Supuesto de aplicacion no cumplido" << endl;
     cout << "[-] La matriz no es cuadrada" << endl;
     return;
   }
 
-  if(complete_x.det() == 0){
+  if (complete_x.det() == 0) {
     cout << "[!] Supuesto de aplicacion no cumplido" << endl;
     cout << "[-] No tiene solucion unica" << endl;
     return;
   }
 
-  if(!complete_x.symmetrical()){
+  if (!complete_x.symmetrical()) {
     cout << "[!] Supuesto de aplicacion no cumplido" << endl;
     cout << "[-] La matriz no es simetrica" << endl;
     return;
   }
 
-  if(!complete_x.definida_positiva()){
+  if (!complete_x.definida_positiva()) {
     cout << "[!] Supuesto de aplicacion no cumplido" << endl;
     cout << "[-] La matriz no esta definida positiva" << endl;
     return;
@@ -534,6 +534,18 @@ void SystemMatrix::cholesky() {
 }
 
 void SystemMatrix::doolittle() {
+  if (complete_x.rows != complete_x.cols) {
+    cout << "[!] Supuesto de aplicacion no cumplido" << endl;
+    cout << "[-] La matriz no es cuadrada" << endl;
+    return;
+  }
+
+  if (complete_x.det() == 0) {
+    cout << "[!] Supuesto de aplicacion no cumplido" << endl;
+    cout << "[-] No tiene solucion unica" << endl;
+    return;
+  }
+
   int m_size = complete_x.rows;
   double acomulation = 0;
   Matrix mat_l(vector<vector<double>>(complete_x.rows,
@@ -610,7 +622,7 @@ void SystemMatrix::doolittle() {
     vec_solucion.at(i) = (1 / mat_u.matrix.at(i).at(i)) * acomulation;
   }
 
-  cout << "\t[Solucion X]" << endl;
+  cout << "\t[Vector X]" << endl;
   for (auto vs : vec_solucion) {
     cout << vs << endl;
   }
