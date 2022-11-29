@@ -445,6 +445,30 @@ void SystemMatrix::relajacion() {
 }
 
 void SystemMatrix::cholesky() {
+  if(complete_x.rows != complete_x.cols){
+    cout << "[!] Supuesto de aplicacion no cumplido" << endl;
+    cout << "[-] La matriz no es cuadrada" << endl;
+    return;
+  }
+
+  if(complete_x.det() == 0){
+    cout << "[!] Supuesto de aplicacion no cumplido" << endl;
+    cout << "[-] No tiene solucion unica" << endl;
+    return;
+  }
+
+  if(!complete_x.symmetrical()){
+    cout << "[!] Supuesto de aplicacion no cumplido" << endl;
+    cout << "[-] La matriz no es simetrica" << endl;
+    return;
+  }
+
+  if(!complete_x.definida_positiva()){
+    cout << "[!] Supuesto de aplicacion no cumplido" << endl;
+    cout << "[-] La matriz no esta definida positiva" << endl;
+    return;
+  }
+
   int m_size = complete_x.rows;
   Matrix mat_l(vector<vector<double>>(complete_x.rows,
                                       vector<double>(complete_x.cols, 0)));

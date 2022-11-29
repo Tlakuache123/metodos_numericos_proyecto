@@ -116,6 +116,25 @@ Matrix Matrix::operator*(const Matrix &mt2) {
   return Matrix(f_mt);
 }
 
+bool Matrix::operator==(const Matrix &mt2) {
+  if (rows != mt2.rows || cols != mt2.cols) {
+    return false;
+  }
+
+  for (int i = 0; i < matrix.size(); i++) {
+    for (int j = 0; j < matrix.at(0).size(); j++) {
+      if (matrix.at(i).at(j) != mt2.matrix.at(i).at(j))
+        return false;
+    }
+  }
+
+  return true;
+}
+
+bool Matrix::symmetrical(){
+  return *this == transp();
+}
+
 void Matrix::switch_row(int row1, int row2) {
   vector<double> aux_row = matrix.at(row1);
   matrix.at(row1) = matrix.at(row2);
@@ -204,7 +223,11 @@ double Matrix::det() {
     return 0;
   }
 
-  if (rows == 2 && cols == 2) {
+  if (rows == 1) {
+    return matrix.at(0).at(0);
+  }
+
+  if (rows == 2) {
     d = (matrix.at(0).at(0) * matrix.at(1).at(1)) -
         (matrix.at(0).at(1) * matrix.at(1).at(0));
   } else {
@@ -258,5 +281,26 @@ bool Matrix::diagonal_dominante() {
     }
   }
 
+  return true;
+}
+
+bool Matrix::definida_positiva(){
+  if(cols != rows){
+    return false;
+  }
+  int size = matrix.size();
+  vector<vector<double>> sub_matrix;
+  for(int k = 0; k < size; k ++){
+    sub_matrix.clear();
+    for(int i = 0; i < k; i++){
+      sub_matrix.push_back(vector<double>());
+      for(int j = 0; j < k; j++){
+        sub_matrix.at(i).push_back(matrix.at(i).at(j));
+      }
+      if(Matrix(sub_matrix).det() < 0){
+        return false;
+      }
+    }
+  }
   return true;
 }
