@@ -110,6 +110,17 @@ void SystemMatrix::inversion_partitions() {
   // Diagonales cuadradas [0] && [3]
   // complete_x_partitions = [0] [1] [2] [3]
   // complete_b_partitions = [0] [1]
+  if(complete_x.det() == 0){
+    cout << "[!] Supuesto de aplicacion no cumplido" << endl;
+    cout << "[-] Determinante igual a cero" << endl;
+    return;
+  }
+
+  if(cmp_x_part[3].det() == 0){
+    cout << "[!] Supuesto de aplicacion no cumplido" << endl;
+    cout << "[-] No existe inversa en la submatrix A22" << endl;
+    return;
+  }
 
   Matrix C =
       cmp_x_part[0] - cmp_x_part[1] * (cmp_x_part[3].invers() * cmp_x_part[2]);
