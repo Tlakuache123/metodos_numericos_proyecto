@@ -1,4 +1,4 @@
-#include "aux.h"
+#include "aux_functions.h"
 #include <iostream>
 
 using namespace std;
