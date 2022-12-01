@@ -287,7 +287,7 @@ Matrix Matrix::adjunta() {
     }
   }
 
-  return aux_mat * -1;
+  return aux_mat;
 }
 
 bool Matrix::diagonal_dominante() {

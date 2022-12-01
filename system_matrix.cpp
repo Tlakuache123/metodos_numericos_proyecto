@@ -135,6 +135,7 @@ void SystemMatrix::inversion_partitions() {
   }
 
   printPartitions();
+  cout << cmp_x_part[3].invers() << endl;
 
   Matrix C =
       cmp_x_part[0] - (cmp_x_part[1] * (cmp_x_part[3].invers() * cmp_x_part[2]));
