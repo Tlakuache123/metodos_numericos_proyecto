@@ -28,6 +28,8 @@ public:
   Matrix operator-(Matrix const &mt2);
   Matrix operator*(Matrix const &mt2);
   Matrix operator*(const double &escalar);
+  Matrix operator/(Matrix const &mt2);
+  Matrix operator/(const double &escalar);
   bool operator==(Matrix const &mt2);
 
   // Advance Operations
@@ -35,6 +37,7 @@ public:
   Matrix smaller_copy(int row, int col);
   Matrix invers();
   Matrix get_ident();
+  Matrix adjunta();
   double det();
   bool symmetrical();
   bool diagonal_dominante();

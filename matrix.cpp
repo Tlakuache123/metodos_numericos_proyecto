@@ -116,6 +116,37 @@ Matrix Matrix::operator*(const Matrix &mt2) {
   return Matrix(f_mt);
 }
 
+Matrix Matrix::operator/(const double &escalar) {
+  vector<vector<double>> f_mt(matrix.size(),
+                              vector<double>(matrix.at(0).size()));
+  for (int i = 0; i < matrix.size(); i++) {
+    for (int j = 0; j < matrix.at(0).size(); j++) {
+      f_mt.at(i).at(j) = matrix.at(i).at(j) / escalar;
+    }
+  }
+
+  return Matrix(f_mt);
+}
+
+Matrix Matrix::operator/(const Matrix &mt2) {
+  int n_rows_sz = matrix.size();
+  int n_cols_sz = mt2.matrix.at(0).size();
+
+  vector<vector<double>> f_mt(n_rows_sz, vector<double>(n_cols_sz));
+
+  for (int i = 0; i < n_rows_sz; i++) {
+
+    for (int j = 0; j < n_cols_sz; j++) {
+      for (int k = 0; k < mt2.matrix.size(); k++) {
+
+        f_mt.at(i).at(j) += matrix.at(i).at(k) / mt2.matrix.at(k).at(j);
+      }
+    }
+  }
+
+  return Matrix(f_mt);
+}
+
 bool Matrix::operator==(const Matrix &mt2) {
   if (rows != mt2.rows || cols != mt2.cols) {
     return false;
@@ -232,8 +263,8 @@ double Matrix::det() {
         (matrix.at(0).at(1) * matrix.at(1).at(0));
   } else {
     for (int i = 0; i < rows; i++) {
-      d = d +
-          pow(matrix_sign, i) * matrix.at(0).at(i) * smaller_copy(0, i).det();
+      d += matrix_sign * matrix.at(0).at(i) * smaller_copy(0, i).det();
+      matrix_sign = -matrix_sign;
     }
   }
 
@@ -241,25 +272,22 @@ double Matrix::det() {
 }
 
 Matrix Matrix::invers() {
-  Matrix m_inv(get_ident());
-  Matrix m_copy(matrix);
+  double determinante = det();
+  Matrix aux_mt = adjunta();
 
-  for (int k = 0; k < m_copy.matrix.size(); k++) {
-    double divider = 1 / m_copy.matrix.at(k).at(k);
+  return aux_mt.transp() / determinante;
+}
 
-    m_inv.set_row(k, m_inv.product_row(k, divider));
-    m_copy.set_row(k, m_copy.product_row(k, divider));
-
-    for (int i = 0; i < m_copy.matrix.size(); i++) {
-      if (i == k) {
-        continue;
-      }
-      m_inv.set_row(i, m_inv.sum_row(i, k, -m_copy.matrix.at(i).at(k)));
-      m_copy.set_row(i, m_copy.sum_row(i, k, -m_copy.matrix.at(i).at(k)));
+Matrix Matrix::adjunta() {
+  Matrix aux_mat = *this;
+  double total = 0;
+  for(int i = 0; i < rows; i++){
+    for(int j = 0; j < rows; j++){
+      aux_mat.matrix.at(i).at(j) = pow(-1, (i + 1) + (j + 1)) * smaller_copy(i, j).det();
     }
   }
 
-  return m_inv;
+  return aux_mat * -1;
 }
 
 bool Matrix::diagonal_dominante() {

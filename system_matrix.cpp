@@ -134,8 +134,10 @@ void SystemMatrix::inversion_partitions() {
     return;
   }
 
+  printPartitions();
+
   Matrix C =
-      cmp_x_part[0] - cmp_x_part[1] * (cmp_x_part[3].invers() * cmp_x_part[2]);
+      cmp_x_part[0] - (cmp_x_part[1] * (cmp_x_part[3].invers() * cmp_x_part[2]));
   Matrix D = cmp_x_part[1] * cmp_x_part[3].invers();
   Matrix E = cmp_x_part[3].invers() * cmp_x_part[2];
   Matrix F = cmp_x_part[3].invers() + E * (C.invers() * D);
