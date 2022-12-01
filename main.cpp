@@ -62,27 +62,6 @@ int get_metodo_factorizacion() {
 }
 
 int main(int argc, char *argv[]) {
-  vector<vector<double>> mt_x {
-                {5, 8, 0, -3, -3, 0},
-                {0, 4, -3, 0, -5, 7},
-               {3, 2, 1, -1, -5, 0},
-               {0, 5, -4, 0, -5, 1},
-                {0, -3, 0, 8, -1, 2},
-               {1, 0, 8, -3, -2, 2},
-               };
-  vector<vector<double>> mt_b {
-                 {4},
-                 {-6.2832},
-               {1.41421},
-               {11},
-               {8},
-               {8}
-               };
-  SystemMatrix sys (mt_x, mt_b);
-  sys.inversion_partitions();
-  return 0;
-
-
   int opt = 0;
   do{
     opt = get_sub_menu();
