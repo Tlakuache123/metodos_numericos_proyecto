@@ -39,6 +39,7 @@ public:
   bool symmetrical();
   bool diagonal_dominante();
   bool definida_positiva();
+  bool tridiagonal();
 
   // Constructors
   Matrix();

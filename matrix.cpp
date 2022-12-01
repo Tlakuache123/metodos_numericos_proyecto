@@ -304,3 +304,21 @@ bool Matrix::definida_positiva(){
   }
   return true;
 }
+
+bool Matrix::tridiagonal(){
+  if(rows != cols){
+    return false;
+  }
+
+  for(int i = 0; i < rows; i++){
+    for(int j = 0; j < rows; j++){
+      if(matrix.at(i).at(j) != 0){
+        if(j < i - 1 || j > i + 1){
+          return false;
+        }
+      }
+    }
+  }
+
+  return true;
+}

@@ -628,6 +628,24 @@ void SystemMatrix::doolittle() {
 }
 
 void SystemMatrix::crout(){
+  if (complete_x.rows != complete_x.cols) {
+    cout << "[!] Supuesto de aplicacion no cumplido" << endl;
+    cout << "[-] La matriz no es cuadrada" << endl;
+    return;
+  }
+
+  if (complete_x.det() == 0) {
+    cout << "[!] Supuesto de aplicacion no cumplido" << endl;
+    cout << "[-] No tiene solucion unica" << endl;
+    return;
+  }
+
+  if (!complete_x.tridiagonal()){
+    cout << "[!] Supuesto de aplicacion no cumplido" << endl;
+    cout << "[-] Matriz no tridiagonal" << endl;
+    return;
+  }
+
   int m_size = complete_x.rows;
   double acomulation = 0;
   Matrix mat_l(vector<vector<double>>(complete_x.rows,
