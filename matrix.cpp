@@ -263,8 +263,8 @@ double Matrix::det() {
         (matrix.at(0).at(1) * matrix.at(1).at(0));
   } else {
     for (int i = 0; i < rows; i++) {
-      d += matrix_sign * matrix.at(0).at(i) * smaller_copy(0, i).det();
       matrix_sign = -matrix_sign;
+      d += matrix_sign * matrix.at(0).at(i) * smaller_copy(0, i).det();
     }
   }
 
@@ -319,15 +319,26 @@ bool Matrix::definida_positiva(){
   int size = matrix.size();
   vector<vector<double>> sub_matrix;
   for(int k = 0; k < size; k ++){
+    cout << "New submatrix" << endl;
+    cout << "s:" << size << endl;
+
     sub_matrix.clear();
-    for(int i = 0; i < k; i++){
+
+    for(int i = 0; i <= k; i++){
+
       sub_matrix.push_back(vector<double>());
-      for(int j = 0; j < k; j++){
+
+      for(int j = 0; j <= k; j++){
+
         sub_matrix.at(i).push_back(matrix.at(i).at(j));
+
       }
-      if(Matrix(sub_matrix).det() < 0){
-        return false;
-      }
+    }
+
+    cout << Matrix(sub_matrix) << endl;
+    cout << Matrix(sub_matrix).det() << endl;
+    if(Matrix(sub_matrix).det() < 0){
+      return false;
     }
   }
   return true;
