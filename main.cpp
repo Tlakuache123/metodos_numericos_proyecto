@@ -52,6 +52,7 @@ int get_metodo_factorizacion() {
   cout << "=\t\t[Factorizacion LU]\t\t=" << endl;
   cout << "[1]\t Cholesky" << endl;
   cout << "[2]\t Doolittle" << endl;
+  cout << "[3]\t Crout" << endl;
   cout << "[+] => ";
   cin >> option;
   return option;
@@ -135,6 +136,10 @@ int main(int argc, char *argv[]) {
 
     case 2:
       system.doolittle();
+      break;
+
+    case 3:
+      system.crout();
       break;
 
     default:

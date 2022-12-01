@@ -6,7 +6,6 @@
 #include <vector>
 
 using namespace std;
-
 // Constructors
 
 SystemMatrix::SystemMatrix() {
@@ -591,6 +590,67 @@ void SystemMatrix::doolittle() {
       mat_l.matrix.at(k).at(i) = (complete_x.matrix.at(k).at(i) - acomulation) /
                                  mat_u.matrix.at(i).at(i);
     }
+  }
+
+  cout << "\t[L]" << endl;
+  cout << mat_l << endl;
+  cout << "\t[U]" << endl;
+  cout << mat_u << endl;
+
+  for (int i = 0; i < m_size; i++) {
+    double acomulation = 0;
+    for (int j = 0; j < i; j++) {
+      acomulation -= mat_l.matrix.at(i).at(j) * vec_solucion.at(j);
+    }
+    acomulation += complete_b.matrix.at(i).at(0);
+    vec_solucion.push_back(1 / mat_l.matrix.at(i).at(i) * acomulation);
+  }
+
+  cout << "\t[Vector C]" << endl;
+  for (auto vs : vec_solucion) {
+    cout << vs << endl;
+  }
+
+  // Creando vector solucion X
+  for (int i = m_size - 1; i >= 0; i--) {
+    double acomulation = 0;
+    for (int j = m_size - 1; j > i; j--) {
+      acomulation -= mat_u.matrix.at(i).at(j) * vec_solucion.at(j);
+    }
+    acomulation += vec_solucion.at(i);
+    vec_solucion.at(i) = (1 / mat_u.matrix.at(i).at(i)) * acomulation;
+  }
+
+  cout << "\t[Vector X]" << endl;
+  for (auto vs : vec_solucion) {
+    cout << vs << endl;
+  }
+}
+
+void SystemMatrix::crout(){
+  int m_size = complete_x.rows;
+  double acomulation = 0;
+  Matrix mat_l(vector<vector<double>>(complete_x.rows,
+                                      vector<double>(complete_x.cols, 0)));
+  Matrix mat_u(vector<vector<double>>(complete_x.rows,
+                                      vector<double>(complete_x.cols, 0)));
+  vector<double> vec_solucion;
+  
+  // U fija
+  for(int i = 0; i < m_size; i++){
+    mat_u.matrix.at(i).at(i) = 1;
+  }
+  // L11 = A11
+  mat_l.matrix.at(0).at(0) = complete_x.matrix.at(0).at(0);
+
+  //L fija
+  for(int i = 1 ; i < m_size; i++){
+    mat_l.matrix.at(i).at(i - 1) = complete_x.matrix.at(i).at(i - 1);
+  }
+
+  for(int i = 1; i < m_size; i++){
+    mat_u.matrix.at(i - 1).at(i) = complete_x.matrix.at(i - 1).at(i) / mat_l.matrix.at(i - 1).at(i - 1);
+    mat_l.matrix.at(i).at(i) = complete_x.matrix.at(i).at(i) - mat_l.matrix.at(i).at(i - 1) * mat_u.matrix.at(i - 1).at(i);
   }
 
   cout << "\t[L]" << endl;

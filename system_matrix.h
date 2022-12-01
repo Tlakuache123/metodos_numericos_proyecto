@@ -26,6 +26,7 @@ public:
   void relajacion();
   void cholesky();
   void doolittle();
+  void crout();
 
 private:
   int complete_rows;
