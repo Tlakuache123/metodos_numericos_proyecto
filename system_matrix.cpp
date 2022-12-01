@@ -161,7 +161,6 @@ void SystemMatrix::intercambio() {
 
   SystemMatrix aux_sys = *this;
   int sys_size = aux_sys.complete_x.matrix.size();
-  bool aprox_flag = false;
 
   for (int k = 0; k < sys_size; k++) {
     // Checar si el pivote es 0 -> Cambio de rows
@@ -222,9 +221,6 @@ void SystemMatrix::intercambio() {
   // SOLUCION
   Matrix sol_matrix = aux_sys.complete_x * aux_sys.complete_b;
   cout << "Solucion" << endl;
-  if (aprox_flag) {
-    cout << "APROXIMADA" << endl;
-  }
   cout << sol_matrix << endl;
 }
 

@@ -13,7 +13,6 @@ void falsa_posicion() {
   int index, iteraciones = 0;
   double a, b, error = 0;
 
-  cout << "=\tFalsa Posicion\t=" << endl;
   imprimir_funciones();
   cout << "[+] Funcion a evaluar => ";
   cin >> index;

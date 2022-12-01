@@ -12,7 +12,7 @@ using namespace std;
 // f(x) = x^5 + 25/6x^4 - 197/6x^3 - 511/6x^2 + 395/6x + 175
 // f(x) = Cos^2(x)(x^2-8x+10)
 void imprimir_funciones(){
-    cout << "Funciones:" << endl;
+    cout << "\t[Funciones]" << endl;
     cout << "1- f(x) = Cos^2(x)Sen^2(x)" << endl;
     cout << "2- f(x) = e^x(x^2-2x-15)" << endl;
     cout << "3- x^5 + 25/6x^4 - 197/6x^3 - 511/6x^2 + 395/6x + 175" << endl;

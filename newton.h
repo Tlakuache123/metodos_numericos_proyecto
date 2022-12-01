@@ -8,7 +8,6 @@ void newton() {
   int index, iteraciones, count = 0;
   double x, error = 0;
 
-  cout << "=\tNewton\t" << endl;
   imprimir_funciones();
   cout << "[+] Funcion a evaluar => ";
   cin >> index;

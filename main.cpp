@@ -13,9 +13,12 @@ using namespace std;
 int get_sub_menu() {
   int option = 0;
   cout << "==\t\t [MENU] \t\t==" << endl;
+  cout << "Araujo Palestina Claudio Hassiel" << endl;
+  cout << "Osorio Garcia Diego" << endl;
   cout << "[1]\t Solucion de Ecuaciones" << endl;
   cout << "[2]\t Sistemas de Ecuaciones Lineales" << endl;
   cout << "[3]\t Factorizacion LU" << endl;
+  cout << "[0]\t Salir" << endl;
   cout << "[+] => ";
   cin >> option;
   return option;
@@ -59,93 +62,106 @@ int get_metodo_factorizacion() {
 }
 
 int main(int argc, char *argv[]) {
-  int opt = get_sub_menu();
-  // Solucion de Ecuaciones
-  if (opt == 1) {
-    opt = get_metodo_ecuacion();
-    switch (opt) {
-    case 1:
-      biseccion();
-      break;
+  int opt = 0;
+  do{
+    opt = get_sub_menu();
+    // Solucion de Ecuaciones
+    if (opt == 1) {
+      if(opt > 4){
+        cout << "[!]\t Ingresa una opcion valida" << endl;
+        continue;
+      }
+      opt = get_metodo_ecuacion();
+      switch (opt) {
+      case 1:
+        cout << "[Biseccion]" << endl;
+        biseccion();
+        break;
 
-    case 2:
-      falsa_posicion();
-      break;
+      case 2:
+        cout << "[Falsa posicion]" << endl;
+        falsa_posicion();
+        break;
 
-    case 3:
-      newton();
-      break;
+      case 3:
+        cout << "[Newton]" << endl;
+        newton();
+        break;
 
-    case 4:
-      secante();
-      break;
-
-    default:
-      cout << "[!]\t Ingresa una opcion valida" << endl;
-      break;
+      case 4:
+        cout << "[Secante]" << endl;
+        secante();
+        break;
+      }
     }
-  }
-  // Solucion de Matrices
-  else if (opt == 2) {
-    opt = get_metodo_matriz();
-    SystemMatrix system = SystemMatrix();
+    // Solucion de Matrices
+    else if (opt == 2) {
+      opt = get_metodo_matriz();
+      if(opt > 6){
+        cout << "[!]\t Ingresa una opcion valida" << endl;
+        continue;
+      }
+      SystemMatrix system = SystemMatrix();
 
-    switch (opt) {
-    case 1:
-      system.inversion_partitions();
-      break;
+      switch (opt) {
+      case 1:
+        cout << "[Inversion particionado]" << endl;
+        system.inversion_partitions();
+        break;
 
-    case 2:
-      system.gauss_partitions();
-      break;
+      case 2:
+        cout << "[Guass particionado]" << endl;
+        system.gauss_partitions();
+        break;
 
-    case 3:
-      system.intercambio();
-      break;
+      case 3:
+        cout << "[Intercambio]" << endl;
+        system.intercambio();
+        break;
 
-    case 4:
-      system.jacobi();
-      break;
+      case 4:
+        cout << "[Jacobi]" << endl;
+        system.jacobi();
+        break;
 
-    case 5:
-      system.gauss_seidel();
-      break;
+      case 5:
+        cout << "[Gauss Seidel]" << endl;
+        system.gauss_seidel();
+        break;
 
-    case 6:
-      system.relajacion();
-      break;
-
-    case 7:
-      system.cholesky();
-      break;
-
-    default:
-      cout << "[!]\t Ingresa una opcion valida" << endl;
-      break;
+      case 6:
+        cout << "[Relajacion]" << endl;
+        system.relajacion();
+        break;
+      }
     }
-  }
 
-  else if (opt == 3) {
-    opt = get_metodo_factorizacion();
-    SystemMatrix system = SystemMatrix();
+    else if (opt == 3) {
+      opt = get_metodo_factorizacion();
+      if(opt > 3){
+        cout << "[!]\t Ingresa una opcion valida" << endl;
+        continue;
+      }
+      SystemMatrix system = SystemMatrix();
 
-    switch (opt) {
-    case 1:
-      system.cholesky();
-      break;
+      switch (opt) {
+      case 1:
+        cout << "[Cholesky]" << endl;
+        system.cholesky();
+        break;
 
-    case 2:
-      system.doolittle();
-      break;
+      case 2:
+        cout << "[Doolittle]" << endl;
+        system.doolittle();
+        break;
 
-    case 3:
-      system.crout();
-      break;
-
-    default:
-      cout << "[!]\t Ingresa una opcion valida" << endl;
-      break;
+      case 3:
+        cout << "[Crout]" << endl;
+        system.crout();
+        break;
+      }
     }
-  }
+
+  } while(opt != 0);
   return 0;
 }

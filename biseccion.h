@@ -12,7 +12,6 @@ void biseccion() {
   // Ingreso de datos
   int index, iteraciones, count = 0;
   double a, b, error = 0;
-  cout << "=\tBiseccion\t=" << endl;
   imprimir_funciones();
   cout << "[+] Funcion a evaluar => ";
   cin >> index;
